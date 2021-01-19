@@ -1,4 +1,21 @@
-# cb-mokcup
-concept for the UI of a live webcam site.
+# cb-mockup
 
-This project is part of my portfolio. not intended to be released or mantained.
+Mockup of chaturbate website powered by Bootstrap 5 and Vuejs
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
