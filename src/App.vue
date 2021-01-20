@@ -1,11 +1,14 @@
 <template>
   <!-- main site navbar -->
   <nav class="navbar fixed-top bg-light menu">
-    <li>menu link here</li>
-              <!-- <div class="form-check form-switch" v-for="(filter, index) in availableFilters" :key="index">
-            <input class="form-check-input" type="checkbox" id="" v-model="activeFilter" @change="filterCams($event)" data-value="">
-            <label class="form-check-label" for="">{{ filter.name }}</label>
-          </div> -->
+    <a class="navbar-brand">
+    </a>
+    
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="darkModeSelector" v-model="darkMode" @click.prevent="ToggleDarkMode()">
+      <label class="form-check-label" for="darkModeSelector">Dark mode</label>
+    </div>
+  
   </nav>
   <!-- pages content -->
   <div class="container">
@@ -16,6 +19,29 @@
     <li>footer links here</li>
   </nav>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      darkMode: null
+    }
+  },
+  methods: {
+    ToggleDarkMode() {
+      console.log('clicked', this.darkMode);
+      this.darkMode = !this.darkMode;
+      if( this.darkMode ) {
+        document.body.style.background = '#191919';
+        document.body.style.color = 'white';
+      }else{
+        document.body.style.background = 'white';
+        document.body.style.color = 'black'; 
+      }
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
