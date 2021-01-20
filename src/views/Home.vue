@@ -2,27 +2,46 @@
   <!-- models grid filters -->
   <div class="row m-0">
   <!--  -->
-    <div class="col-12">
-      <!-- search by gender -->
-      <a class="" href="#"></a>
-      <!-- search by name -->
-      <input type="search" class="form-control" name="" value="" >
+    <div class="col-sm-12 col-md-12 col-lg-12 mt-5">
+      <div class="row m-0">
+        <!-- search by gender -->
+        <div class="col-md-6 col-lg-6 p-0 d-none d-md-block">
+          
+          <div class="form-check form-check-inline" v-for="(filter, index) in availableFilters" :key="index">
+            <input class="form-check-input" type="radio" id="" name="" @change="filterCams()" v-model="activeFilter" :value="filter">
+            <label class="form-check-label" for="">{{ filter }}</label>
+          </div>
+
+
+        </div>
+        <!-- search by name -->
+        <div class="col-sm-12 col-md-6 col-lg-6 p-0">
+          <div class="input-group">
+            <input type="search" class="form-control" name="" value="" >
+            <button class="btn btn-outline-primary">search</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- models grid with infinite scroll pagination -->
   <div class="row m-0">
     <!-- models presentation card -->
     <div class="col-sm-12 col-md-3 col-lg-3 p-2 mt-3 mb-3" v-for="(c, index) in defaultCamsList" :key="index">
-      <div class="card">
+      <div class="card border-warning">
         <!-- thumbnail of the room -->
         <!-- if the image is clicked will open the model room -->
         <img class="card-img-top w-100" :src="c.image_url">
-        <div class="card-body">
+        <div class="card-body p-2">
           <!-- model screen name -->
           <!-- if the name is clicked will open the model room -->
-          <h6 class="fw-bold">{{ c.username }}</h6>
-          <!-- room subject -->
-          <small class="text-truncate">{{ c.room_subject }}</small>
+          <a class="text-decoration-none stretched-link" :href="c.chat_room_url">
+            <h6 class="fw-bold m-0">{{ c.username }}</h6>
+            <!-- room subject -->
+            <span class="d-inline-block text-truncate w-75">
+              <small class="">{{ c.room_subject }}</small>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -36,9 +55,12 @@ export default {
   name: 'Index',
   data() {
     return {
+      availableFilters: ['all','female','male','trans','couples'],
+      filter: null,
+      activeFilter: null,
       cardThumbnailUrl: null,
       //isLoading: true,
-      camNumber: 100,
+      camNumber: 12,
       //modelUsername: null,
       //searchResult: null,
       //showResult: false,
@@ -63,29 +85,17 @@ export default {
       .then( (data)  => {
         console.log(data);
         this.onlineCams = [...data]
-        data.lenght = this.camNumber;
+        // this.visibleCams = 
+        //data.lenght = this.camNumber;
         data.forEach( (cam) => {
           this.defaultCamsList.push(cam);
         });
+        this.defaultCamsList.length = this.camNumber;
       });
-      // axios.get(camsUrl)
-      //   .then( (response) => {
-      //     console.log(response);
-      //     this.onlineCams = [...response.data];
-      //     response.data.length = this.camNumber;
-      //     if (updateFeed) {
-      //       console.log("Data update...")
-      //       this.defaultCamsList = []
-      //     }
-      //     response.data.forEach((item) => {
-      //       this.defaultCamsList.push(item)
-      //     })
-      //   })
-      //   .then( () => {
-      //     this.unfilteredCamsList = this.defaultCamsList
-      //     this.isLoading = false
-      //   });
     },
+    filterCams() {
+      console.log(this.activeFilter);
+    }
     // showCam() {
     //   axios.get('https://chaturbate.com/api/chatvideocontext/'+this.modelUsername)
     //   .then( response => {
@@ -107,3 +117,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
