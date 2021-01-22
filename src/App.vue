@@ -1,22 +1,33 @@
 <template>
   <!-- main site navbar -->
   <nav class="navbar fixed-top bg-light menu">
-    <a class="navbar-brand">
-    </a>
-    
-    <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" id="darkModeSelector" v-model="darkMode" @click.prevent="ToggleDarkMode()">
-      <label class="form-check-label" for="darkModeSelector">Dark mode</label>
+    <div class="container-fluid">
+      <!-- menu toggler button -->
+      <button class="hamburger hamburger--squeeze" type="button">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+
+      <a class="navbar-brand float-end">
+        <img src="https://static-assets.highwebmedia.com/images/logo.svg" width="150" height="30">
+      </a>
+      
+      <!-- <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="darkModeSelector" v-model="darkMode" @click.prevent="ToggleDarkMode()">
+        <label class="form-check-label" for="darkModeSelector">Dark mode</label>
+      </div> -->
     </div>
-  
   </nav>
   <!-- pages content -->
-  <div class="container">
+  <div class="container mt-5">
     <router-view/>
   </div>
   <!-- footer -->
   <nav class="navbar bg-light footer">
-    <li>footer links here</li>
+    <div class="container-fluid">
+      <li>footer links here</li>
+    </div>
   </nav>
 </template>
 
