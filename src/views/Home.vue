@@ -1,82 +1,85 @@
 <template>
-  <!-- models grid filters -->
-  <div class="row m-0">
-    <div class="col-sm-12 col-md-12 col-lg-12 mt-5">
-      <div class="row m-0">
-        <!-- filter by gender -->
-        <div class="col-md-6 col-lg-6 p-0 d-none d-md-block">
-          <div class="form-check form-check-inline" v-for="(filter, index) in availableFilters" :key="index">
-            <input class="form-check-input" type="radio" id="" name="" @change="filterCams()" v-model="activeFilter" :value="filter">
-            <label class="form-check-label text-uppercase" for="">{{ filter }}</label>
+  <div class="container mt-5">
+    <!-- models grid filters -->
+    <div class="row m-0">
+      <div class="col-sm-12 col-md-12 col-lg-12 mt-5">
+        <div class="row m-0">
+          <!-- filter by gender -->
+          <div class="col-md-6 col-lg-6 p-0 d-none d-md-block">
+            <div class="form-check form-check-inline" v-for="(filter, index) in availableFilters" :key="index">
+              <input class="form-check-input" type="radio" id="" name="" @change="filterCams()" v-model="activeFilter" :value="filter">
+              <label class="form-check-label text-uppercase" for="">{{ filter }}</label>
+            </div>
           </div>
-        </div>
-        <!-- search by name -->
-        <div class="col-sm-12 col-md-6 col-lg-6 p-0">
-          <div class="input-group">
-            <input type="search" class="form-control" name="" v-model="modelUsername">
-            <button class="btn btn-outline-primary" @click.prevent="searchModel()">search</button>
+          <!-- search by name -->
+          <div class="col-sm-12 col-md-6 col-lg-6 p-0">
+            <div class="input-group">
+              <input type="search" class="form-control" name="" v-model="modelUsername">
+              <button class="btn btn-outline-primary" @click.prevent="searchModel()">search</button>
+            </div>
+            <!-- result list -->
           </div>
-          <!-- result list -->
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- models grid -->
-  <div class="row m-0">
-    <!-- models presentation card -->
-    <div class="col-6 col-md-3 col-lg-3 p-2 mt-3 mb-3" v-for="(cam, index) in paginatedCams" :key="index">
-      <div class="card shadow-lg">
-        <!-- thumbnail -->
-        <img class="card-img-top w-100" :src="cam.image_url">
-        <div class="card-body p-2">
-          <!-- model username -->
-          <div class="d-block">
-            <a class="text-decoration-none stretched-link float-start" :href="cam.chat_room_url">
-              <h6 class="fw-bold m-0">{{ cam.username }}</h6>
-            </a>
-            <span class="float-end">
-              <small class="">{{ cam.age }} <i :class="setGenderIcon(cam.gender)"></i></small>
+    <!-- models grid -->
+    <div class="row m-0">
+      <!-- models presentation card -->
+      <div class="col-6 col-md-3 col-lg-3 p-2 mt-3 mb-3" v-for="(cam, index) in paginatedCams" :key="index">
+        <div class="card shadow-lg">
+          <!-- thumbnail -->
+          <img class="card-img-top w-100" :src="cam.image_url">
+          <div class="card-body p-2">
+            <!-- model username -->
+            <div class="d-block">
+              
+              <router-link class="text-decoration-none stretched-link float-start" :to="{name: 'Chatroom', params: {username: cam.username} }">
+                <h6 class="fw-bold m-0">{{ cam.username }}</h6>
+              </router-link>
+
+              <span class="float-end">
+                <small class="">{{ cam.age }} <i :class="setGenderIcon(cam.gender)"></i></small>
+              </span>
+            </div>
+            <!-- room subject -->
+            <span class="d-inline-block text-truncate w-75">
+              <small class="">{{ cam.room_subject }}</small>
             </span>
-          </div>
-          <!-- room subject -->
-          <span class="d-inline-block text-truncate w-75">
-            <small class="">{{ cam.room_subject }}</small>
-          </span>
-          <!-- room info -->
-          <div class="d-block">
-            <small lass="float-start">
-              <i class="fas fa-users"></i> {{ cam.num_users }}
-            </small>
-            <small class="fw-bold float-end" v-if="cam.is_hd">
-              HD
-            </small>
+            <!-- room info -->
+            <div class="d-block">
+              <small lass="float-start">
+                <i class="fas fa-users"></i> {{ cam.num_users }}
+              </small>
+              <small class="fw-bold float-end" v-if="cam.is_hd">
+                HD
+              </small>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- pagination -->
-    <div class="col-sm-12 col-md-12 col-lg-12">
-      <nav aria-label="Page navigation">
-        <ul class="pagination pagination-sm">
-          <li class="page-item">
-            <a class="page-link" :class="{'disabled': page === 1}" href="#" @click.prevent="prevPage()" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item"  :class="{'active': currentPage === startPage + page }" v-for="page in limit" :key="page">
-            <a class="page-link" href="#" @click.prevent="currentPage = startPage + page">{{ startPage + page }}</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" :class="{'disabled': page === totalPages}" href="#" @click.prevent="nextPage()" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <!-- pagination -->
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-sm">
+            <li class="page-item">
+              <a class="page-link" :class="{'disabled': currentPage === 1}" href="#" @click.prevent="prevPage()" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"  :class="{'active': currentPage === startPage + page }" v-for="page in limit" :key="page">
+              <a class="page-link" href="#" @click.prevent="currentPage = startPage + page">{{ startPage + page }}</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" :class="{'disabled': currentPage === totalPages}" href="#" @click.prevent="nextPage()" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -97,8 +100,6 @@ export default {
       // showResult: false,
       onlineCams: [],      
       unfilteredCamsList: [],
-      // streamingURL: null,
-      // hls: null
     }
   },
   created() {
@@ -141,8 +142,7 @@ export default {
   },
   methods: {
     init() {
-      const camsUrl = "https://cors-anywhere.herokuapp.com/https://chaturbate.com/affiliates/api/onlinerooms/?format=json&wm=SsyCf";
-      fetch(camsUrl)
+      fetch('https://cors-anywhere.herokuapp.com/https://chaturbate.com/affiliates/api/onlinerooms/?format=json&wm=SsyCf')
       .then( (res) => res.json() )
       .then( (data) => {
         console.log(data);
@@ -189,25 +189,7 @@ export default {
           return item;
         }
       });
-    },
-    // showCam() {
-    //   axios.get('https://chaturbate.com/api/chatvideocontext/'+this.modelUsername)
-    //   .then( response => {
-    //     //console.log(response)
-    //     this.streamingURL = response.data.hls_source
-    //   }).then( () => {
-    //     const el = document.getElementById('player')
-    //     if( Hls.isSupported() ){
-    //       this.hls.loadSource(this.streamingURL)
-    //       this.hls.attachMedia(el)
-    //       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-    //         //el.play();
-    //         console.log('video player ready!')
-    //       })
-    //     }
-
-    //   });
-    // }
+    }
   }
 }
 </script>
